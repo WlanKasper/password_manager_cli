@@ -5,50 +5,38 @@
 
 const fs = require("fs");
 const map = new Map();
+let json = '';
 
-function addNewCollection(key, val) {
-    map.set(key.toLowerCase(), val);
+createBaseJSON('user_1');
+
+function createBaseJSON(user) {
+    json = {
+        user: user,
+        collections: []
+    };
 }
 
-function getValueByKey(key) {
-    return map.get(key.toLowerCase());
-}
-
-function createNewCollection(company, login, password, link = 'empty', mnemonic = 'empty', restore_key = 'empty') {
-    return {
+function createNewCollection(company, login, password, link, mnemonic, restore_key) {
+    json.collections.push({
         company: company,
         login: login.toLowerCase(),
         password: password,
         link: link,
         mnemonic: mnemonic,
         restore_key: restore_key
-    };
+    });
 }
-// Неправильно расставляет скобки, нужно [{},{}], а делает {}{}
+
 function saveDataToFile() {
-    for (let mapKey of map.values()) {
-        let data = JSON.stringify(mapKey, null, 2);
-        fs.appendFileSync('files/data.json', data);
-    }
+    const stream = fs.createWriteStream(
+        'files/data.json',
+        'utf8'
+    );
+    stream.on('error', (err) => console.log(`Err: ${err}`));
+    stream.on('finish', () => console.log('Done'));
+    stream.write(JSON.stringify(json, null, 2));
+    stream.end();
 }
 
-// ----- записывает только последний элемент -----
-// function saveDataToFile() {
-//     const stream = fs.createWriteStream(
-//         'files/data.json',
-//         'utf8'
-//     );
-//     stream.on('error', (err) => console.log(`Err: ${err}`));
-//     stream.on('finish', () => console.log('Done'));
-//     stream.write((chunk) => {
-//         for (let mapKey of map.values()) {
-//             chunk = JSON.stringify(mapKey, null, 2)
-//         }
-//     });
-//     stream.end();
-// }
-
-module.exports.addNewCollection = addNewCollection;
-module.exports.getValueByKey = getValueByKey;
 module.exports.createNewCollection = createNewCollection;
 module.exports.saveDataToFile = saveDataToFile;

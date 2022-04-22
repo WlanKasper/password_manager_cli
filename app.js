@@ -5,7 +5,6 @@
 
 const data = require("./data.js");
 
-let coll = data.createNewCollection('Google','wlankasper@gmail.com', 'test_psw');
-data.addNewCollection(coll.company, coll);
-data.addNewCollection(coll.company, coll);
+data.createNewCollection('Google','wlankasper@gmail.com', 'test_psw');
+data.createNewCollection('Amazon','wlankasper@gmail.it', 'test_psw_2');
 data.saveDataToFile();
