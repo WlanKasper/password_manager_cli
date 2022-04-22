@@ -1,0 +1,15 @@
+{
+  "user": "user_1",
+  "collections": [
+    {
+      "company": "Google",
+      "login": "wlankasper@gmail.com",
+      "password": "test_psw"
+    },
+    {
+      "company": "Amazon",
+      "login": "wlankasper@gmail.it",
+      "password": "test_psw_2"
+    }
+  ]
+}
