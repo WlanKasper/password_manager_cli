@@ -1,11 +1,11 @@
 /*
-* psw_manager_cli v0.1.0
-* Записть данных из файла А --> B перенаправлением потока
+* psw_manager_cli v0.1.1
+* Записывать данные в json файл
 */
 
-const fs = require("fs");
+const data = require("./data.js");
 
-const inp = fs.createReadStream('src/unparsed.txt');
-const out = fs.createWriteStream('src/parsed.txt');
-
-inp.pipe(out);
+let coll = data.createNewCollection('Google','wlankasper@gmail.com', 'test_psw');
+data.addNewCollection(coll.company, coll);
+data.addNewCollection(coll.company, coll);
+data.saveDataToFile();
