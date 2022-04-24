@@ -2,7 +2,7 @@ const fs = require("fs");
 
 let json = '';
 
-function initJSON(user = 'WlanKasper', path = 'files/data.json') {
+function initJSON(user = 'WlanKasper', path = 'data/data.json') {
     try {
         const exists = fs.existsSync(path);
         if (exists) {
@@ -29,7 +29,7 @@ function addNewCollection(company, login, password, link, mnemonic, restore_key)
     });
 }
 
-function saveDataToFile(path = 'files/data.json') {
+function saveDataToFile(path = 'data/data.json') {
     const stream = fs.createWriteStream(
         path,
         'utf8'
@@ -40,7 +40,7 @@ function saveDataToFile(path = 'files/data.json') {
     stream.end();
 }
 
-function requireDataFromFile(path = 'files/data.json') {
+function requireDataFromFile(path = 'data/data.json') {
     try {
         const exists = fs.existsSync(path);
         if (exists) {
@@ -50,6 +50,16 @@ function requireDataFromFile(path = 'files/data.json') {
     } catch (e) {
         console.log(e);
     }
+}
+
+function createFileDir(){
+    try {
+        fs.mkdirSync('data', { recursive: true });
+        console.log('Created dir ~/data');
+      } catch (e) {
+        console.log(e);
+      }
+      
 }
 
 module.exports.initJSON = initJSON;
