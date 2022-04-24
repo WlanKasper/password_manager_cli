@@ -24,7 +24,7 @@ const { clear, debug } = flags;
 
 	if (input.includes('add')){
 		data.initJSON();
-		data.addNewCollection('Google','wlankasper@gmail.com', 'test_psw');
+		data.addNewCollection(flags.company, flags.login, flags.password, flags.link, flags.mnemonic, flags.restore_key);
 		data.saveDataToFile();
 	}
 })();

@@ -23,6 +23,36 @@ const flags = {
 		type: `boolean`,
 		alias: `v`,
 		desc: `Print CLI version`
+	},
+	company: {
+		type: `string`,
+		alias: `cp`,
+		desc: `Add company name: Google`
+	},
+	login: {
+		type: `string`,
+		alias: `l`,
+		desc: `Add login: example@mail.com`
+	},
+	password: {
+		type: `string`,
+		alias: `p`,
+		desc: `Add password: example123`
+	},
+	link: {
+		type: `string`,
+		alias: `lk`,
+		desc: `Add link: example.com`
+	},
+	mnemonic: {
+		type: `string`,
+		alias: `m`,
+		desc: `Add mnemonic: example-example-...`
+	},
+	restore_key: {
+		type: `string`,
+		alias: `rk`,
+		desc: `Add restore_key: example-example-...`
 	}
 };
 
