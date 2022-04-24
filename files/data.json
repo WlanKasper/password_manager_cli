@@ -1,5 +1,5 @@
 {
-  "user": "user_1",
+  "user": "WlanKasper",
   "collections": [
     {
       "company": "Google",
@@ -10,6 +10,21 @@
       "company": "Amazon",
       "login": "wlankasper@gmail.it",
       "password": "test_psw_2"
+    },
+    {
+      "company": "Google",
+      "login": "wlankasper@gmail.com",
+      "password": "test_psw"
+    },
+    {
+      "company": "Amazon",
+      "login": "wlankasper@gmail.it",
+      "password": "test_psw_2"
+    },
+    {
+      "company": "Nvidea",
+      "login": "wlankasper@gmail.it",
+      "password": "test_psw_3"
     }
   ]
 }
