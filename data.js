@@ -38,5 +38,12 @@ function saveDataToFile() {
     stream.end();
 }
 
+function requireDataFromFile() {
+    let file = fs.readFileSync('files/data.json');
+    let data = JSON.parse(file);
+    console.log(data);
+}
+
 module.exports.createNewCollection = createNewCollection;
 module.exports.saveDataToFile = saveDataToFile;
+module.exports.requierDataFromFile = requireDataFromFile;
