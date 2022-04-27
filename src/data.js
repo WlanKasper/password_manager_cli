@@ -20,8 +20,8 @@ function initJSON(user = 'WlanKasper', path = 'data/data.json') {
 
 function addNewCollection(company, login, password, link, mnemonic, restore_key) {
     json.collections.push({
-        company: company,
-        login: login.toLowerCase(),
+        company: transformInput(company),
+        login: transformInput(login),
         password: password,
         link: link,
         mnemonic: mnemonic,
@@ -52,17 +52,31 @@ function requireDataFromFile(path = 'data/data.json') {
     }
 }
 
-function createFileDir(){
-    try {
-        fs.mkdirSync('data', { recursive: true });
-        console.log('Created dir ~/data');
-      } catch (e) {
-        console.log(e);
-      }
-      
+function requireByCompany(companyName) {
+    json = requireDataFromFile();
+    let is = false;
+    for (var i = 0; i <= json.collections.length - 1; i++) {
+        for (key in json.collections[i]) {
+            if (json.collections[i].hasOwnProperty(key)) {
+                if(key == 'company' && json.collections[i][key] == transformInput(companyName)){
+                    is = true;
+                }
+                if (is == true){
+                    console.log("Ключ = " + key);
+                    console.log("Значение = " + json.collections[i][key]);
+                }
+            }
+        }
+        is = false;
+    }
+}
+
+function transformInput(input) {
+    return input.toLowerCase();
 }
 
 module.exports.initJSON = initJSON;
 module.exports.addNewCollection = addNewCollection;
 module.exports.saveDataToFile = saveDataToFile;
 module.exports.requireDataFromFile = requireDataFromFile;
+module.exports.requireByCompany = requireByCompany;

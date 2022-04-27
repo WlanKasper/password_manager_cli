@@ -22,9 +22,13 @@ const { clear, debug } = flags;
 	input.includes(`help`) && cli.showHelp(0);
 	debug && log(flags);
 
-	if (input.includes('add')){
+	if (input.includes('add')) {
 		data.initJSON();
 		data.addNewCollection(flags.company, flags.login, flags.password, flags.link, flags.mnemonic, flags.restore_key);
 		data.saveDataToFile();
+	} else if (input.includes('show')){
+		console.log('Test Show');
+		data.initJSON();
+		data.requireByCompany(flags.company);
 	}
 })();
