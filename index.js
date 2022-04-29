@@ -27,8 +27,7 @@ const { clear, debug } = flags;
 		data.addNewCollection(flags.company, flags.login, flags.password, flags.link, flags.mnemonic, flags.restore_key);
 		data.saveDataToFile();
 	} else if (input.includes('show')){
-		console.log('Test Show');
 		data.initJSON();
-		data.requireByCompany(flags.company);
+		console.log(data.getByCompany(flags.company));
 	}
 })();

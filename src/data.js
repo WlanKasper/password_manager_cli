@@ -6,7 +6,7 @@ function initJSON(user = 'WlanKasper', path = 'data/data.json') {
     try {
         const exists = fs.existsSync(path);
         if (exists) {
-            json = requireDataFromFile();
+            requireDataFromFile();
         } else {
             json = {
                 user: user,
@@ -45,30 +45,38 @@ function requireDataFromFile(path = 'data/data.json') {
         const exists = fs.existsSync(path);
         if (exists) {
             let file = fs.readFileSync(path);
-            return JSON.parse(file);
+            json = JSON.parse(file);
         }
     } catch (e) {
         console.log(e);
     }
 }
 
-function requireByCompany(companyName) {
-    json = requireDataFromFile();
+function getAllData(){
+    return json;
+}
+
+function getByCompany(companyName){
     let is = false;
-    for (var i = 0; i <= json.collections.length - 1; i++) {
-        for (key in json.collections[i]) {
-            if (json.collections[i].hasOwnProperty(key)) {
-                if(key == 'company' && json.collections[i][key] == transformInput(companyName)){
-                    is = true;
-                }
-                if (is == true){
-                    console.log("Ключ = " + key);
-                    console.log("Значение = " + json.collections[i][key]);
+    let temp = '';
+    if (json != null && json.collections.length != 1){
+        for (var i = 0; i <= json.collections.length - 1; i++) {
+            for (key in json.collections[i]) {
+                if (json.collections[i].hasOwnProperty(key)) {
+                    if(key == 'company' && json.collections[i][key] == transformInput(companyName)){
+                        is = true;
+                        temp += '\n-----------------'
+                    }
+                    if (is == true){
+                        temp += '\n'+key + ": " + json.collections[i][key];
+                    }
                 }
             }
+            is = false;
         }
-        is = false;
+        return temp
     }
+    return json.collections[0];
 }
 
 function transformInput(input) {
@@ -79,4 +87,5 @@ module.exports.initJSON = initJSON;
 module.exports.addNewCollection = addNewCollection;
 module.exports.saveDataToFile = saveDataToFile;
 module.exports.requireDataFromFile = requireDataFromFile;
-module.exports.requireByCompany = requireByCompany;
+module.exports.getAllData = getAllData;
+module.exports.getByCompany = getByCompany;
