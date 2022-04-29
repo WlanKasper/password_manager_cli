@@ -26,32 +26,32 @@ const flags = {
 	},
 	company: {
 		type: `string`,
-		alias: `cp`,
+		alias: `company`,
 		desc: `Add company name: Google`
 	},
 	login: {
 		type: `string`,
-		alias: `l`,
+		alias: `login`,
 		desc: `Add login: example@mail.com`
 	},
 	password: {
 		type: `string`,
-		alias: `p`,
+		alias: `password`,
 		desc: `Add password: example123`
 	},
 	link: {
 		type: `string`,
-		alias: `lk`,
+		alias: `link`,
 		desc: `Add link: example.com`
 	},
 	mnemonic: {
 		type: `string`,
-		alias: `m`,
+		alias: `mnemonic`,
 		desc: `Add mnemonic: example-example-...`
 	},
 	restore_key: {
 		type: `string`,
-		alias: `rk`,
+		alias: `restore_key`,
 		desc: `Add restore_key: example-example-...`
 	}
 };
