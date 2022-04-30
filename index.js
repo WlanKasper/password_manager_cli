@@ -16,11 +16,16 @@ const crypto = require('./src/crypto');
 
 const input = cli.input;
 const flags = cli.flags;
-const { clear, debug } = flags;
+const {
+	clear,
+	debug
+} = flags;
 
 (async () => {
-	
-	init({ clear });
+
+	init({
+		clear
+	});
 	input.includes(`help`) && cli.showHelp(0);
 	debug && log(flags);
 
@@ -28,11 +33,11 @@ const { clear, debug } = flags;
 		data.initJSON();
 		data.addNewCollection(flags.company, flags.login, flags.password, flags.link, flags.mnemonic, flags.restore_key);
 		data.saveDataToFile();
-	} else if (input.includes('show')){
+	} else if (input.includes('show')) {
 		data.initJSON();
 		console.log(data.getByCompany(flags.company));
-	} else if (input.includes('cipher')){
-		crypto.cipher('hello');
-		crypto.decipher();
+	} else if (input.includes('cipher')) {
+		let code = crypto.cipher(data.getJSON());
+		crypto.decipher(code);
 	}
 })();

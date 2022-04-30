@@ -1,11 +1,11 @@
 const crypto = require('crypto');
 
 const iv = crypto.randomBytes(16); //генерация вектора инициализации
-const key = crypto.scryptSync('secret', 'salt', 32); //генерация ключа
+const key = crypto.scryptSync('sdfj32poierdsfgdsf', 'safkpomf239i32', 32); //генерация ключа
 
-let encryptedData = '';
 
 function cipher(json) {
+  let encryptedData = '';
   let cipherStream = crypto.createCipheriv(
     'aes-256-cbc',
     key,
@@ -17,9 +17,10 @@ function cipher(json) {
   });
   cipherStream.write(json);
   cipherStream.end();
+  return encryptedData;
 }
 
-function decipher() {
+function decipher(encryptedData) {
   let decipherStream = crypto.createDecipheriv(
     'aes-256-cbc',
     key,

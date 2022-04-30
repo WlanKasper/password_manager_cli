@@ -6,7 +6,7 @@ function initJSON(user = 'WlanKasper', path = 'data/data.json') {
     try {
         const exists = fs.existsSync(path);
         if (exists) {
-            requireDataFromFile();
+            requireJSONFromFile();
         } else {
             json = {
                 user: user,
@@ -19,7 +19,8 @@ function initJSON(user = 'WlanKasper', path = 'data/data.json') {
 }
 
 function getJSON(){
-    return json;
+    initJSON();
+    return requireDataFromJSON();
 }
 
 function addNewCollection(company, login, password, link, mnemonic, restore_key) {
@@ -44,7 +45,7 @@ function saveDataToFile(path = 'data/data.json') {
     stream.end();
 }
 
-function requireDataFromFile(path = 'data/data.json') {
+function requireJSONFromFile(path = 'data/data.json') {
     try {
         const exists = fs.existsSync(path);
         if (exists) {
@@ -56,8 +57,18 @@ function requireDataFromFile(path = 'data/data.json') {
     }
 }
 
-function getAllData(){
-    return json;
+function requireDataFromJSON(){
+    let temp = '';
+    if (json != null && json.collections.length != 1){
+        for (var i = 0; i <= json.collections.length - 1; i++) {
+            for (key in json.collections[i]) {
+                if (json.collections[i].hasOwnProperty(key)) {
+                        temp += '\n'+key + ": " + json.collections[i][key];
+                }
+            }
+        }
+        return temp;
+    }
 }
 
 function getByCompany(companyName){
@@ -91,6 +102,5 @@ module.exports.initJSON = initJSON;
 module.exports.getJSON = getJSON;
 module.exports.addNewCollection = addNewCollection;
 module.exports.saveDataToFile = saveDataToFile;
-module.exports.requireDataFromFile = requireDataFromFile;
-module.exports.getAllData = getAllData;
+module.exports.requireJSONFromFile = requireJSONFromFile;
 module.exports.getByCompany = getByCompany;
