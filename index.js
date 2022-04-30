@@ -11,6 +11,8 @@ const init = require('./utils/init');
 const cli = require('./utils/cli');
 const log = require('./utils/log');
 const data = require('./src/data');
+const crypto = require('./src/crypto');
+
 
 const input = cli.input;
 const flags = cli.flags;
@@ -29,5 +31,8 @@ const { clear, debug } = flags;
 	} else if (input.includes('show')){
 		data.initJSON();
 		console.log(data.getByCompany(flags.company));
+	} else if (input.includes('cipher')){
+		crypto.cipher('hello');
+		crypto.decipher();
 	}
 })();

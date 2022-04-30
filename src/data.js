@@ -18,6 +18,10 @@ function initJSON(user = 'WlanKasper', path = 'data/data.json') {
     }
 }
 
+function getJSON(){
+    return json;
+}
+
 function addNewCollection(company, login, password, link, mnemonic, restore_key) {
     json.collections.push({
         company: transformInput(company),
@@ -84,6 +88,7 @@ function transformInput(input) {
 }
 
 module.exports.initJSON = initJSON;
+module.exports.getJSON = getJSON;
 module.exports.addNewCollection = addNewCollection;
 module.exports.saveDataToFile = saveDataToFile;
 module.exports.requireDataFromFile = requireDataFromFile;
