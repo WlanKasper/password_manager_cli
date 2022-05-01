@@ -13,7 +13,6 @@ const log = require('./utils/log');
 const data = require('./src/manager');
 const cipher = require('./src/cipher');
 
-
 const input = cli.input;
 const flags = cli.flags;
 const {
@@ -30,15 +29,14 @@ const {
 	debug && log(flags);
 
 	if (input.concat(`test`)){
-		// data.initTemp();
+		// cipher.saveKey();
+		data.initTemp();
 
-		var text = 'alskfs fsdfjkls fsdj kf230929d s f{}][[ dsdf';
-		console.log('\ntext:' + text);
+		// var text = 'alskfs fsdfjkls fsdj kf230929d s f{}][[ dsdf';
+		// console.log('\ntext:' + text);
 
-		var encrypted = cipher.encrypt(text);
-		console.log('\nencrypted:' + encrypted);
+		// var encrypted = cipher.encrypt(text);
 
-		var decrypted = cipher.decrypt(encrypted);
-		console.log('\ndecrypted:' + decrypted);
+		// var decrypted = cipher.decrypt(encrypted);
 	}
 })();

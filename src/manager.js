@@ -1,4 +1,5 @@
 const fs = require('fs');
+const cipher = require('./cipher');
 
 // ------------------------------------------------------------------------------------------------
 
@@ -16,14 +17,14 @@ function initTemp()
             console.log('Файл найден');
             requireDataFromFile();
             addCollectionToJSON('google', 'login123', 'psw123');
-            saveDataToFile(convertJSONtoString(tempJSON));
+            saveDataToFile();
         }
         else
         {
             console.log('Файл не найден или пуст');
             initJSON();
             createDir();
-            saveDataToFile(convertJSONtoString(tempJSON));
+            saveDataToFile();
         }
     });
 }
@@ -33,15 +34,16 @@ function initTemp()
 function requireDataFromFile()
 {
     let fileContent = fs.readFileSync(path, 'utf8');
-    console.log(fileContent);
-    tempJSON = convertStringToJSON(fileContent);
+    console.log('fileContent => ' + fileContent);
+    let encrypted = cipher.decrypt(fileContent);
+    tempJSON = convertStringToJSON(encrypted);
 }
 
 function createDir()
 {
     try
     {
-        fs.mkdirSync('files', { recursive: true });
+        fs.mkdirSync('data', { recursive: true });
     }
     catch (e)
     {
@@ -49,13 +51,14 @@ function createDir()
     }
 }
 
-function saveDataToFile(data)
+function saveDataToFile()
 {
+    let data = convertJSONtoString(tempJSON);
     try
     {
         fs.writeFileSync(
           path,
-          data,
+          cipher.encrypt(data),
           'utf8'
         );
     }
@@ -104,3 +107,4 @@ function convertStringToJSON(string)
 // ------------------------------------------------------------------------------------------------
 
 module.exports.initTemp = initTemp;
+module.exports.addCollectionToJSON = addCollectionToJSON;
