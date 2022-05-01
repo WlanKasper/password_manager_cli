@@ -10,8 +10,8 @@
 const init = require('./utils/init');
 const cli = require('./utils/cli');
 const log = require('./utils/log');
-const data = require('./src/data');
-const crypto = require('./src/crypto');
+const data = require('./src/manager');
+const cipher = require('./src/cipher');
 
 
 const input = cli.input;
@@ -29,15 +29,16 @@ const {
 	input.includes(`help`) && cli.showHelp(0);
 	debug && log(flags);
 
-	if (input.includes('add')) {
-		data.initJSON();
-		data.addNewCollection(flags.company, flags.login, flags.password, flags.link, flags.mnemonic, flags.restore_key);
-		data.saveDataToFile();
-	} else if (input.includes('show')) {
-		data.initJSON();
-		console.log(data.getByCompany(flags.company));
-	} else if (input.includes('cipher')) {
-		let code = crypto.cipher(data.getJSON());
-		crypto.decipher(code);
+	if (input.concat(`test`)){
+		// data.initTemp();
+
+		var text = 'alskfs fsdfjkls fsdj kf230929d s f{}][[ dsdf';
+		console.log('\ntext:' + text);
+
+		var encrypted = cipher.encrypt(text);
+		console.log('\nencrypted:' + encrypted);
+
+		var decrypted = cipher.decrypt(encrypted);
+		console.log('\ndecrypted:' + decrypted);
 	}
 })();
