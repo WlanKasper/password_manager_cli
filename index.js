@@ -27,21 +27,18 @@ const {
 	input.includes(`help`) && cli.showHelp(0);
 	debug && log(flags);
 
-	if (input.includes(`add`)){
-		data.initTemp(function(){
+	if (input.includes(`add`)) {
+		data.initTemp(function () {
 			data.addCollectionToJSON(flags.company, flags.login, flags.password);
-			// data.addCollectionToJSON('google', 'log', 'pass');
-		}, function(){
+		}, function () {
 			data.saveDataToFile();
 		});
-	}
-	else if (input.includes(`delete`)){
+	} else if (input.includes(`delete`)) {
 		data.deleteFile();
-	}
-	else if (input.includes(`find`)){
-		data.initTemp(function(){
+	} else if (input.includes(`find`)) {
+		data.initTemp(function () {
 			console.log(data.getCollectionByCompany(flags.company));
-		}, function(){
+		}, function () {
 
 		});
 	}

@@ -8,7 +8,7 @@ var tempJSON;
 
 // ------------------------------------------------------------------------------------------------
 
-function initTemp(callback_1, callback_2)
+function initTemp(callback_1, callback_save)
 {
     fs.stat(path, function(err, stats)
     {
@@ -23,8 +23,10 @@ function initTemp(callback_1, callback_2)
             initJSON();
             createDir();
         }
+        // Для другого
         callback_1();
-        callback_2();
+        // Для сохранения
+        callback_save();
     });
 }
 
