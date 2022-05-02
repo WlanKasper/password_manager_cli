@@ -1,23 +1,40 @@
 {
-  "name": "password_manager_cli",
-  "preferGlobal": true,
-  "bin": "./src/app.js",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "commander": "^9.2.0",
-    "electron": "^18.1.0",
-    "event-stream": "^4.0.1",
-    "inquirer": "^8.2.2"
-  },
-  "devDependencies": {
-    "chalk": "^5.0.1"
-  }
+	"name": "password-manager",
+	"description": "Password Manager education project on Node.js",
+	"version": "0.3.0",
+	"license": "UNLICENSED",
+	"bin": {
+		"password-manager": "index.js",
+		"psw-m": "index.js"
+	},
+	"author": {
+		"name": "wlankasper",
+		"email": "wlankasper@gmail.com",
+		"url": "no"
+	},
+	"keywords": [
+		"password-manager",
+		"wlankasper"
+	],
+	"files": [
+		"index.js",
+		"utils"
+	],
+	"scripts": {
+		"format": "prettier --write \"./**/*.{js,json}\""
+	},
+	"dependencies": {
+		"async": "^3.2.3",
+		"chalk": "^4.1.2",
+		"cli-alerts": "^1.2.2",
+		"cli-handle-error": "^4.4.0",
+		"cli-handle-unhandled": "^1.1.1",
+		"cli-meow-help": "^3.1.0",
+		"cli-welcome": "^2.2.2",
+		"meow": "^9.0.0",
+		"node-rsa": "^1.1.1"
+	},
+	"devDependencies": {
+		"prettier": "^2.6.2"
+	}
 }
