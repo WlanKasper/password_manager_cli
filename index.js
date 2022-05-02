@@ -11,7 +11,7 @@ const init = require('./utils/init');
 const cli = require('./utils/cli');
 const log = require('./utils/log');
 const data = require('./src/manager');
-const cipher = require('./src/cipher');
+// const cipher = require('./src/cipher');
 
 const input = cli.input;
 const flags = cli.flags;
@@ -31,6 +31,14 @@ const {
 	if (input.concat(`test`)){
 		// cipher.saveKey();
 		data.initTemp();
+		setTimeout(function () {
+			data.addCollectionToJSON('google', 'login123', 'psw123');
+		}, 2000);
+		setTimeout(function () {
+			data.saveDataToFile();
+		}, 2000);
+		
+		
 
 		// var text = 'alskfs fsdfjkls fsdj kf230929d s f{}][[ dsdf';
 		// console.log('\ntext:' + text);

@@ -16,7 +16,6 @@ function initTemp()
         {
             console.log('Файл найден');
             requireDataFromFile();
-            addCollectionToJSON('google', 'login123', 'psw123');
             saveDataToFile();
         }
         else
@@ -73,15 +72,19 @@ function saveDataToFile()
 
 function addCollectionToJSON(company, login, password, link, mnemonic, restore_key)
 {
-    tempJSON.collections.push
-    ({
-        company: company,
-        login: login,
-        password: password,
-        link: link,
-        mnemonic: mnemonic,
-        restore_key: restore_key
-    });
+    if (tempJSON != undefined)
+    {
+        tempJSON.collections.push
+        ({
+            company: company,
+            login: login,
+            password: password,
+            link: link,
+            mnemonic: mnemonic,
+            restore_key: restore_key
+        });
+        console.log('\nADDED NEW\n');
+    }
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -106,5 +109,8 @@ function convertStringToJSON(string)
 
 // ------------------------------------------------------------------------------------------------
 
-module.exports.initTemp = initTemp;
-module.exports.addCollectionToJSON = addCollectionToJSON;
+module.exports = {
+    initTemp: initTemp,
+    addCollectionToJSON: addCollectionToJSON,
+    saveDataToFile: saveDataToFile
+};
