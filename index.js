@@ -11,8 +11,6 @@ const init = require('./utils/init');
 const cli = require('./utils/cli');
 const log = require('./utils/log');
 const data = require('./src/manager');
-const async = require ('async');
-// const cipher = require('./src/cipher');
 
 const input = cli.input;
 const flags = cli.flags;
@@ -31,7 +29,8 @@ const {
 
 	if (input.includes(`add`)){
 		data.initTemp(function(){
-			data.addCollectionToJSON('google', 'login123', 'psw123');
+			data.addCollectionToJSON(flags.company, flags.login, flags.password);
+			// data.addCollectionToJSON('google', 'log', 'pass');
 		}, function(){
 			data.saveDataToFile();
 		});
@@ -41,9 +40,9 @@ const {
 	}
 	else if (input.includes(`find`)){
 		data.initTemp(function(){
-			console.log(data.getCollectionByCompany('google'));
+			console.log(data.getCollectionByCompany(flags.company));
 		}, function(){
-			
+
 		});
 	}
 })();

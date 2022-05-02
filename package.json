@@ -1,7 +1,7 @@
 {
 	"name": "password-manager",
-	"description": "password manager project",
-	"version": "0.2.0",
+	"description": "Password Manager education project on Node.js",
+	"version": "0.3.0",
 	"license": "UNLICENSED",
 	"bin": {
 		"password-manager": "index.js",

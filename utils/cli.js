@@ -26,38 +26,41 @@ const flags = {
 	},
 	company: {
 		type: `string`,
-		alias: `company`,
-		desc: `Add company name: Google`
+		alias: `c`,
+		desc: `Use to input company name`
 	},
 	login: {
 		type: `string`,
-		alias: `login`,
-		desc: `Add login: example@mail.com`
+		alias: `l`,
+		desc: `Use to input login`
 	},
 	password: {
 		type: `string`,
-		alias: `password`,
-		desc: `Add password: example123`
+		alias: `p`,
+		desc: `Use to input password`
 	},
 	link: {
 		type: `string`,
-		alias: `link`,
-		desc: `Add link: example.com`
+		alias: `lk`,
+		desc: `Use to input company link`
 	},
 	mnemonic: {
 		type: `string`,
-		alias: `mnemonic`,
-		desc: `Add mnemonic: example-example-...`
+		alias: `m`,
+		desc: `Use to input mnemonic`
 	},
 	restore_key: {
 		type: `string`,
-		alias: `restore_key`,
-		desc: `Add restore_key: example-example-...`
+		alias: `r`,
+		desc: `Use to input restore key`
 	}
 };
 
 const commands = {
-	help: { desc: `Print help info` }
+	help: { desc: `Print help info` },
+	add: { desc: `Add new data to storage` },
+	find: { desc: `Fins data in storage` },
+	delete: { desc: `delete all data from storage` }
 };
 
 const helpText = meowHelp({

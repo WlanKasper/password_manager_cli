@@ -25,7 +25,6 @@ function initTemp(callback_1, callback_2)
         }
         callback_1();
         callback_2();
-        // saveDataToFile();
     });
 }
 
@@ -70,7 +69,7 @@ function saveDataToFile()
 
 function addCollectionToJSON(company, login, password, link, mnemonic, restore_key)
 {
-    if (tempJSON != undefined)
+    if (tempJSON != undefined && company != undefined)
     {
         tempJSON.collections.push
         ({
@@ -110,9 +109,8 @@ function getCollectionByCompany(company)
             }
             is = false;
         }
-        return temp;
+        return (temp != '') ? temp : '\nДанные отсутствуют\n';
     }
-    return null;
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -132,14 +130,20 @@ function createDir()
 
 function deleteFile()
 {
-    try
+    fs.stat(path, function(err, stats)
     {
-        fs.unlinkSync(path);
-        console.log('\nФайл удален\n');
-    } catch (e)
-    {
-        console.log(e);
-    }
+        if (!err)
+        {
+            try
+            {
+                fs.unlinkSync(path);
+                console.log('\nФайл удален\n');
+            } catch (e)
+            {
+                console.log(e);
+            }
+        }
+    });
 }
 
 // ------------------------------------------------------------------------------------------------
