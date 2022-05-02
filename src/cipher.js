@@ -4,14 +4,12 @@ const fs = require('fs');
 function encrypt (toEncrypt)
 {
     var encrypted = getKey().encrypt(toEncrypt, 'base64');
-    console.log('encrypted => ' + encrypted);
     return encrypted;
 }
 
 function decrypt(toDecrypt)
 {
     var decrypted = getKey().decrypt(toDecrypt, 'utf8');
-    console.log('decrypted => ' + decrypted);
     return decrypted;
 }
 

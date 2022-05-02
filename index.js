@@ -11,6 +11,7 @@ const init = require('./utils/init');
 const cli = require('./utils/cli');
 const log = require('./utils/log');
 const data = require('./src/manager');
+const async = require ('async');
 // const cipher = require('./src/cipher');
 
 const input = cli.input;
@@ -28,23 +29,21 @@ const {
 	input.includes(`help`) && cli.showHelp(0);
 	debug && log(flags);
 
-	if (input.concat(`test`)){
-		// cipher.saveKey();
-		data.initTemp();
-		setTimeout(function () {
+	if (input.includes(`add`)){
+		data.initTemp(function(){
 			data.addCollectionToJSON('google', 'login123', 'psw123');
-		}, 2000);
-		setTimeout(function () {
+		}, function(){
 			data.saveDataToFile();
-		}, 2000);
-		
-		
-
-		// var text = 'alskfs fsdfjkls fsdj kf230929d s f{}][[ dsdf';
-		// console.log('\ntext:' + text);
-
-		// var encrypted = cipher.encrypt(text);
-
-		// var decrypted = cipher.decrypt(encrypted);
+		});
+	}
+	else if (input.includes(`delete`)){
+		data.deleteFile();
+	}
+	else if (input.includes(`find`)){
+		data.initTemp(function(){
+			console.log(data.getCollectionByCompany('google'));
+		}, function(){
+			
+		});
 	}
 })();

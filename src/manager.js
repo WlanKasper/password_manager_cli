@@ -8,23 +8,24 @@ var tempJSON;
 
 // ------------------------------------------------------------------------------------------------
 
-function initTemp()
+function initTemp(callback_1, callback_2)
 {
     fs.stat(path, function(err, stats)
     {
-        if (!err && stats.size > 10)
+        if (!err && stats.size > 0)
         {
-            console.log('Файл найден');
+            console.log('\nФайл найден\n');
             requireDataFromFile();
-            saveDataToFile();
         }
         else
         {
-            console.log('Файл не найден или пуст');
+            console.log('\nФайл не найден или пуст\n');
             initJSON();
             createDir();
-            saveDataToFile();
         }
+        callback_1();
+        callback_2();
+        // saveDataToFile();
     });
 }
 
@@ -33,33 +34,30 @@ function initTemp()
 function requireDataFromFile()
 {
     let fileContent = fs.readFileSync(path, 'utf8');
-    console.log('fileContent => ' + fileContent);
-    let encrypted = cipher.decrypt(fileContent);
-    tempJSON = convertStringToJSON(encrypted);
-}
+    console.log('\nДанные из файла => \n' + fileContent);
 
-function createDir()
-{
-    try
-    {
-        fs.mkdirSync('data', { recursive: true });
-    }
-    catch (e)
-    {
-        console.log(e);
-    }
+    let encrypted = cipher.decrypt(fileContent);
+    console.log('\nДешифрованные данные => \n' + encrypted);
+
+    tempJSON = convertStringToJSON(encrypted);
 }
 
 function saveDataToFile()
 {
     let data = convertJSONtoString(tempJSON);
+    console.log('\JSON -> String данные => \n' + data);
+    
+    let encrypted = cipher.encrypt(data);
+    console.log('\nЗашифрованные данные => \n' + encrypted);
     try
     {
         fs.writeFileSync(
           path,
-          cipher.encrypt(data),
+          encrypted,
           'utf8'
         );
+
+        console.log('\nФайл сохранен\n');
     }
     catch (e)
     {
@@ -83,7 +81,64 @@ function addCollectionToJSON(company, login, password, link, mnemonic, restore_k
             mnemonic: mnemonic,
             restore_key: restore_key
         });
-        console.log('\nADDED NEW\n');
+        console.log('\nДобавленна новая коллекция\n');
+    }
+    else
+    {
+        console.log('\nНе добавленна новая коллекция\n');
+    }
+}
+
+// ------------------------------------------------------------------------------------------------
+
+function getCollectionByCompany(company)
+{
+    let is = false;
+    let temp = '';
+    if (tempJSON != null && tempJSON.collections.length != 0){
+        for (var i = 0; i <= tempJSON.collections.length - 1; i++) {
+            for (key in tempJSON.collections[i]) {
+                if (tempJSON.collections[i].hasOwnProperty(key)) {
+                    if(key == 'company' && tempJSON.collections[i][key] == company){
+                        is = true;
+                        temp += '\n-----------------'
+                    }
+                    if (is == true){
+                        temp += '\n'+key + ": " + tempJSON.collections[i][key];
+                    }
+                }
+            }
+            is = false;
+        }
+        return temp;
+    }
+    return null;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+function createDir()
+{
+    try
+    {
+        fs.mkdirSync('data', { recursive: true });
+        console.log('\nСоздана дирркетория Data\n');
+    }
+    catch (e)
+    {
+        console.log(e);
+    }
+}
+
+function deleteFile()
+{
+    try
+    {
+        fs.unlinkSync(path);
+        console.log('\nФайл удален\n');
+    } catch (e)
+    {
+        console.log(e);
     }
 }
 
@@ -112,5 +167,7 @@ function convertStringToJSON(string)
 module.exports = {
     initTemp: initTemp,
     addCollectionToJSON: addCollectionToJSON,
-    saveDataToFile: saveDataToFile
+    saveDataToFile: saveDataToFile,
+    deleteFile: deleteFile,
+    getCollectionByCompany: getCollectionByCompany
 };
