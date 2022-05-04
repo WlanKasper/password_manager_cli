@@ -35,26 +35,24 @@ function initTemp(callback_1, callback_save)
 function requireDataFromFile()
 {
     let fileContent = fs.readFileSync(path, 'utf8');
-    console.log('\nДанные из файла => \n' + fileContent);
+    console.log('FILE CONTENT: ' + fileContent);
 
-    let encrypted = cipher.decrypt(fileContent);
-    console.log('\nДешифрованные данные => \n' + encrypted);
+    let encrypted = cipher.decrypt(fileContent).toString('base64');
+    console.log('ENCT: ' + encrypted);
 
     tempJSON = convertStringToJSON(encrypted);
+    console.log('JSON: ' + tempJSON);
 }
 
 function saveDataToFile()
 {
     let data = convertJSONtoString(tempJSON);
-    console.log('\JSON -> String данные => \n' + data);
-    
     let encrypted = cipher.encrypt(data);
-    console.log('\nЗашифрованные данные => \n' + encrypted);
     try
     {
         fs.writeFileSync(
           path,
-          encrypted,
+          encrypted.toString('base64'),
           'utf8'
         );
 
