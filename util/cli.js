@@ -31,20 +31,19 @@ async function menu() {
         let firsQuestion = {
             type: 'password',
             name: 'aeskey',
-            message: 'Enter your password: ',
+            message: 'Enter your AES password: ',
             mask: '*'
         };
 
         const firstAnswers = await inquirer.prompt(firsQuestion);
 
-        // TODO: Проверка пароля пробой расшифровки
-        if (firstAnswers.aeskey == 'ul') {
+        if (true) {
             // MENU
             let secondQuestion = {
                 type: 'list',
                 name: 'action',
                 message: 'Menu',
-                choices: ['<-> Add new account', '<-> Find account', '<-> Delete account', '<-> Exit'],
+                choices: ['<-> Add new account', '<-> Find account', '<-> Delete all', '<-> Exit'],
             };
             const secondAnswers = await inquirer.prompt(secondQuestion);
 
@@ -103,13 +102,24 @@ async function menu() {
                     );
                     break;
 
-                case '<-> Delete account':
-                    data.deleteFile();
+                case '<-> Delete all':
+                    let realy = {
+                        type: 'confirm',
+                        name: 'deleteAll',
+                        message: 'You will never be able to recover the data.\nAre you sure you want to delete all the data?: ',
+                        default: false
+                    };
+                    const answerToDelete = await inquirer.prompt(realy);
+                    if (answerToDelete.deleteAll == true){
+                        data.deleteFile();
+                    }
                     break;
 
                 case '<-> Exit':
                     return true;
             }
+        } else {
+            console.log('\nPassword Error\n');
         }
     } else {
         // AES KEY PASSWORD

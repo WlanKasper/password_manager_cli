@@ -46,14 +46,18 @@ function encrypt(data) {
 // }
 
 function decrypt(encryptedData, authorization) {
-    const decryptedData = crypto.privateDecrypt(
-        {
-            key: getKey('keys/private.key'),
-            passphrase: authorization,
-        },
-        Buffer.from(encryptedData, byteStr)
-        );
-        return decryptedData.toString(byteSiq);
+    try{
+        const decryptedData = crypto.privateDecrypt(
+            {
+              key: getKey('keys/private.key'),
+              passphrase: authorization,
+            },
+            Buffer.from(encryptedData, byteStr)
+          );
+          return decryptedData.toString(byteSiq);
+    } catch (err){
+        return false;
+    }
 }
 
 // function decrypt(encryptedData) {
@@ -101,8 +105,18 @@ function checkKeys()
 
 }
 
+// переделать в мини зашифрованый файл для проверки 
+// или проверять по публичному ключу
+function checkPass(pass){
+    if(decrypt('data/data.txt', pass) != false){
+        return true;
+    }
+    return false;
+}
+
 module.exports.encrypt = encrypt;
 module.exports.decrypt = decrypt;
 module.exports.createKeyPair = createKeyPair;
 module.exports.getKey = getKey;
 module.exports.checkKeys = checkKeys;
+module.exports.checkPass = checkPass;
