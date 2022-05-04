@@ -19,15 +19,15 @@ function createKeyPair()
           passphrase: 'test'
         }
       }, (err, publicKey, privateKey) => {
-        saveToFile(publicKey, 'data/public.key');
-        saveToFile(privateKey, 'data/private.key');
+        saveToFile(publicKey, 'keys/public.key');
+        saveToFile(privateKey, 'keys/private.key');
       });
 }
 
 
 function encrypt(data) {
     const encryptedData = crypto.publicEncrypt(
-        getKey('data/public.key'),
+        getKey('keys/public.key'),
         Buffer.from(data),
     );
     return encryptedData.toString(byteStr);
@@ -47,7 +47,7 @@ function encrypt(data) {
 function decrypt(encryptedData) {
     const decryptedData = crypto.privateDecrypt(
         {
-          key: getKey('data/private.key'),
+          key: getKey('keys/private.key'),
           passphrase: 'test',
         },
         Buffer.from(encryptedData, byteStr)
