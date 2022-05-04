@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const fs = require('fs');
+const { get } = require("http");
 
 const byteSiq = 'utf8'
 const byteStr = 'base64'
@@ -91,14 +92,13 @@ function getKey(path)
 
 function checkKeys()
 {
-    fs.stat('keys/public.key', function(err, stats)
-    {
-        if (err.errno == -2)
-        {
-            return false;
-        }
-    });
-    return true;
+    try{
+        let res = getKey('keys/private.key');
+        return true;
+    }catch(e){
+        return false;
+    }
+
 }
 
 module.exports.encrypt = encrypt;
