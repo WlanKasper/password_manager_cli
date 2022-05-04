@@ -45,18 +45,14 @@ function encrypt(data) {
 // }
 
 function decrypt(encryptedData, authorization) {
-    try{
-        const decryptedData = crypto.privateDecrypt(
-            {
-              key: getKey('keys/private.key'),
-              passphrase: authorization,
-            },
-            Buffer.from(encryptedData, byteStr)
-          );
-          return decryptedData.toString(byteSiq);
-    } catch (err){
-        console.log('Не верный пароль!');
-    }
+    const decryptedData = crypto.privateDecrypt(
+        {
+            key: getKey('keys/private.key'),
+            passphrase: authorization,
+        },
+        Buffer.from(encryptedData, byteStr)
+        );
+        return decryptedData.toString(byteSiq);
 }
 
 // function decrypt(encryptedData) {
@@ -84,7 +80,7 @@ function saveToFile(data, path)
     } catch (e) {
         console.log(e);
     };
-    console.log('\nФайл сохранен в ' + path);
+    // console.log('\nФайл сохранен в ' + path);
 }
 
 function getKey(path)
@@ -93,7 +89,20 @@ function getKey(path)
     return key;
 }
 
+function checkKeys()
+{
+    fs.stat('keys/public.key', function(err, stats)
+    {
+        if (err.errno == -2)
+        {
+            return false;
+        }
+    });
+    return true;
+}
+
 module.exports.encrypt = encrypt;
 module.exports.decrypt = decrypt;
 module.exports.createKeyPair = createKeyPair;
 module.exports.getKey = getKey;
+module.exports.checkKeys = checkKeys;

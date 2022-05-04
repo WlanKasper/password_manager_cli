@@ -19,12 +19,12 @@ function initTemp(authorization ,callback_1, callback_save)
     {
         if (!err && stats.size > 0)
         {
-            console.log('\nФайл найден\n');
+            // console.log('\nФайл найден\n');
             requireDataFromFile(authorization);
         }
         else
         {
-            console.log('\nФайл не найден или пуст\n');
+            // console.log('\nФайл не найден или пуст\n');
             initJSON();
             createDir();
         }
@@ -56,7 +56,7 @@ function saveDataToFile()
           byteSiq
         );
 
-        console.log('\nФайл сохранен\n');
+        // console.log('\nФайл сохранен\n');
     }
     catch (e)
     {
@@ -80,11 +80,11 @@ function addCollectionToJSON(company, login, password, link, mnemonic, restore_k
             mnemonic: mnemonic,
             restore_key: restore_key
         });
-        console.log('\nДобавленна новая коллекция\n');
+        // console.log('\nДобавленна новая коллекция\n');
     }
     else
     {
-        console.log('\nНе добавленна новая коллекция\n');
+        // console.log('\nНе добавленна новая коллекция\n');
     }
 }
 
@@ -120,7 +120,7 @@ function createDir()
     try
     {
         fs.mkdirSync('data', { recursive: true });
-        console.log('\nСоздана дирркетория Data\n');
+        // console.log('\nСоздана дирркетория Data\n');
     }
     catch (e)
     {
@@ -137,7 +137,7 @@ function deleteFile()
             try
             {
                 fs.unlinkSync(path);
-                console.log('\nФайл удален\n');
+                // console.log('\nФайл удален\n');
             } catch (e)
             {
                 console.log(e);

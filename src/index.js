@@ -8,10 +8,10 @@
  */
 
 const init = require('./utils/init');
-const cli = require('./utils/cli');
+const cli = require('../util/cli');
 const log = require('./utils/log');
 const data = require('./src/manager');
-const cipher = require('./src/cipher');
+const cipher = require('./cipher');
 const { check } = require('prettier');
 
 const input = cli.input;
