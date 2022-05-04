@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const fs = require('fs');
 
-const byteSiq = 'utf-8'
+const byteSiq = 'utf8'
 const byteStr = 'base64'
 
 function createKeyPair()
@@ -26,28 +26,47 @@ function createKeyPair()
 
 
 function encrypt(data) {
-    const encryptedData = crypto.publicEncrypt({
-            key: getKey('data/public.key'),
-            padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-            oaepHash: "sha256",
-        },
-        Buffer.from(data, byteStr)
+    const encryptedData = crypto.publicEncrypt(
+        getKey('data/public.key'),
+        Buffer.from(data),
     );
-    return encryptedData;
+    return encryptedData.toString(byteStr);
 }
+
+// function encrypt(data) {
+//     const encryptedData = crypto.publicEncrypt({
+//             key: getKey('data/public.key'),
+//             padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+//             oaepHash: "sha256",
+//         },
+//         Buffer.from(data, byteStr)
+//     );
+//     return encryptedData;
+// }
 
 function decrypt(encryptedData) {
     const decryptedData = crypto.privateDecrypt(
         {
           key: getKey('data/private.key'),
           passphrase: 'test',
-          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-          oaepHash: "sha256",
         },
         Buffer.from(encryptedData, byteStr)
       );
-      return decryptedData;
+      return decryptedData.toString(byteSiq);
 }
+
+// function decrypt(encryptedData) {
+//     const decryptedData = crypto.privateDecrypt(
+//         {
+//           key: getKey('data/private.key'),
+//           passphrase: 'test',
+//           padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+//           oaepHash: "sha256",
+//         },
+//         Buffer.from(encryptedData, byteStr)
+//       );
+//       return decryptedData;
+// }
 
 function saveToFile(data, path)
 {
