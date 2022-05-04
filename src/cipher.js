@@ -1,6 +1,9 @@
 const crypto = require("crypto");
 const fs = require('fs');
 
+const byteSiq = 'utf-8'
+const byteStr = 'base64'
+
 function createKeyPair()
 {
     crypto.generateKeyPair('rsa', {
@@ -28,7 +31,7 @@ function encrypt(data) {
             padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
             oaepHash: "sha256",
         },
-        Buffer.from(data, "base64")
+        Buffer.from(data, byteStr)
     );
     return encryptedData;
 }
@@ -41,7 +44,7 @@ function decrypt(encryptedData) {
           padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
           oaepHash: "sha256",
         },
-        Buffer.from(encryptedData, "base64")
+        Buffer.from(encryptedData, byteStr)
       );
       return decryptedData;
 }
@@ -54,7 +57,7 @@ function saveToFile(data, path)
                 fs.writeFileSync(
                     path,
                     data,
-                    'utf-8'
+                    byteSiq
                 );
             } catch (e) {
                 console.log(e);
@@ -66,7 +69,7 @@ function saveToFile(data, path)
 
 function getKey(path)
 {
-    let key = fs.readFileSync(path, 'utf-8');
+    let key = fs.readFileSync(path, byteSiq);
     return key;
 }
 

@@ -8,6 +8,11 @@ var tempJSON;
 
 // ------------------------------------------------------------------------------------------------
 
+const byteSiq = 'utf-8'
+const byteStr = 'base64'
+
+// ------------------------------------------------------------------------------------------------
+
 function initTemp(callback_1, callback_save)
 {
     fs.stat(path, function(err, stats)
@@ -34,10 +39,10 @@ function initTemp(callback_1, callback_save)
 
 function requireDataFromFile()
 {
-    let fileContent = fs.readFileSync(path, 'utf8');
+    let fileContent = fs.readFileSync(path, byteSiq);
     console.log('FILE CONTENT: ' + fileContent);
 
-    let encrypted = cipher.decrypt(fileContent).toString('base64');
+    let encrypted = cipher.decrypt(fileContent).toString(byteStr);
     console.log('ENCT: ' + encrypted);
 
     tempJSON = convertStringToJSON(encrypted);
@@ -52,8 +57,8 @@ function saveDataToFile()
     {
         fs.writeFileSync(
           path,
-          encrypted.toString('base64'),
-          'utf8'
+          encrypted.toString(byteStr),
+          byteSiq
         );
 
         console.log('\nФайл сохранен\n');
