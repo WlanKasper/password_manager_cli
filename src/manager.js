@@ -13,14 +13,14 @@ const byteStr = 'base64'
 
 // ------------------------------------------------------------------------------------------------
 
-function initTemp(callback_1, callback_save)
+function initTemp(authorization ,callback_1, callback_save)
 {
     fs.stat(path, function(err, stats)
     {
         if (!err && stats.size > 0)
         {
             console.log('\nФайл найден\n');
-            requireDataFromFile();
+            requireDataFromFile(authorization);
         }
         else
         {
@@ -37,10 +37,10 @@ function initTemp(callback_1, callback_save)
 
 // ------------------------------------------------------------------------------------------------
 
-function requireDataFromFile()
+function requireDataFromFile(authorization)
 {
     let fileContent = fs.readFileSync(path, byteSiq);
-    let encrypted = cipher.decrypt(fileContent).toString(byteStr);
+    let encrypted = cipher.decrypt(fileContent, authorization).toString(byteStr);
     tempJSON = convertStringToJSON(encrypted);
 }
 

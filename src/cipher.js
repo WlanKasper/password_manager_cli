@@ -4,7 +4,7 @@ const fs = require('fs');
 const byteSiq = 'utf8'
 const byteStr = 'base64'
 
-function createKeyPair()
+function createKeyPair(authorization)
 {
     crypto.generateKeyPair('rsa', {
         modulusLength: 4096,
@@ -16,7 +16,7 @@ function createKeyPair()
           type: 'pkcs8',
           format: 'pem',
           cipher: 'aes-256-cbc',
-          passphrase: 'test'
+          passphrase: authorization,
         }
       }, (err, publicKey, privateKey) => {
         saveToFile(publicKey, 'keys/public.key');
@@ -44,15 +44,19 @@ function encrypt(data) {
 //     return encryptedData;
 // }
 
-function decrypt(encryptedData) {
-    const decryptedData = crypto.privateDecrypt(
-        {
-          key: getKey('keys/private.key'),
-          passphrase: 'test',
-        },
-        Buffer.from(encryptedData, byteStr)
-      );
-      return decryptedData.toString(byteSiq);
+function decrypt(encryptedData, authorization) {
+    try{
+        const decryptedData = crypto.privateDecrypt(
+            {
+              key: getKey('keys/private.key'),
+              passphrase: authorization,
+            },
+            Buffer.from(encryptedData, byteStr)
+          );
+          return decryptedData.toString(byteSiq);
+    } catch (err){
+        console.log('Не верный пароль!');
+    }
 }
 
 // function decrypt(encryptedData) {
@@ -70,19 +74,16 @@ function decrypt(encryptedData) {
 
 function saveToFile(data, path)
 {
-    fs.stat(path, function (err, stats) {
-        if (err) {
-            try {
-                fs.writeFileSync(
-                    path,
-                    data,
-                    byteSiq
-                );
-            } catch (e) {
-                console.log(e);
-            }
-        }
-    });
+    try {
+        fs.writeFileSync
+        (
+            path,
+            data,
+            byteSiq
+        );
+    } catch (e) {
+        console.log(e);
+    };
     console.log('\nФайл сохранен в ' + path);
 }
 

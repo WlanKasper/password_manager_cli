@@ -24,10 +24,9 @@ const flags = {
 		alias: `v`,
 		desc: `Print CLI version`
 	},
-	start: {
-		type: `boolean`,
-		default: true,
-		alias: `s`,
+	authorization: {
+		type: `string`,
+		alias: `a`,
 		desc: `authorization`
 	},
 	company: {

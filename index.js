@@ -25,8 +25,7 @@ const {
 (async () => {
 
 	init({
-		clear,
-		start
+		clear
 	});
 
 	input.includes(`help`) && cli.showHelp(0);
@@ -34,13 +33,14 @@ const {
 
 	if (input.includes('create_key'))
 	{
-		cipher.createKeyPair();
+		cipher.createKeyPair(flags.authorization);
 	}
 
 	if (input.includes('add'))
 	{
 		data.initTemp
 		(
+			flags.authorization,
 			function () {
 			data.addCollectionToJSON(flags.company, flags.login, flags.password);
 			},
@@ -54,6 +54,7 @@ const {
 	{
 		data.initTemp
 		(
+			flags.authorization,
 			function () {
 				console.log(data.getCollectionByCompany(flags.company));
 			},
