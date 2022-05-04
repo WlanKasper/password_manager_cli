@@ -8,14 +8,19 @@ var tempJSON;
 
 // ------------------------------------------------------------------------------------------------
 
-function initTemp(callback_1, callback_save)
+const byteSiq = 'utf8'
+const byteStr = 'base64'
+
+// ------------------------------------------------------------------------------------------------
+
+function initTemp(authorization ,callback_1, callback_save)
 {
     fs.stat(path, function(err, stats)
     {
         if (!err && stats.size > 0)
         {
             console.log('\nФайл найден\n');
-            requireDataFromFile();
+            requireDataFromFile(authorization);
         }
         else
         {
@@ -32,30 +37,23 @@ function initTemp(callback_1, callback_save)
 
 // ------------------------------------------------------------------------------------------------
 
-function requireDataFromFile()
+function requireDataFromFile(authorization)
 {
-    let fileContent = fs.readFileSync(path, 'utf8');
-    console.log('\nДанные из файла => \n' + fileContent);
-
-    let encrypted = cipher.decrypt(fileContent);
-    console.log('\nДешифрованные данные => \n' + encrypted);
-
+    let fileContent = fs.readFileSync(path, byteSiq);
+    let encrypted = cipher.decrypt(fileContent, authorization).toString(byteStr);
     tempJSON = convertStringToJSON(encrypted);
 }
 
 function saveDataToFile()
 {
     let data = convertJSONtoString(tempJSON);
-    console.log('\JSON -> String данные => \n' + data);
-    
     let encrypted = cipher.encrypt(data);
-    console.log('\nЗашифрованные данные => \n' + encrypted);
     try
     {
         fs.writeFileSync(
           path,
-          encrypted,
-          'utf8'
+          encrypted.toString(byteStr),
+          byteSiq
         );
 
         console.log('\nФайл сохранен\n');
