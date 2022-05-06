@@ -1,40 +1,35 @@
 {
-	"name": "password-manager",
-	"description": "Password Manager education project on Node.js",
-	"version": "0.3.0",
-	"license": "UNLICENSED",
-	"bin": {
-		"password-manager": "index.js",
-		"psw-m": "index.js"
-	},
-	"author": {
-		"name": "wlankasper",
-		"email": "wlankasper@gmail.com",
-		"url": "https://github.com/WlanKasper/password_manager_cli"
-	},
-	"keywords": [
-		"password-manager",
-		"wlankasper"
-	],
-	"files": [
-		"index.js",
-		"utils"
-	],
-	"scripts": {
-		"format": "prettier --write \"./**/*.{js,json}\""
-	},
-	"dependencies": {
-		"async": "^3.2.3",
-		"chalk": "^4.1.2",
-		"cli-alerts": "^1.2.2",
-		"cli-handle-error": "^4.4.0",
-		"cli-handle-unhandled": "^1.1.1",
-		"cli-meow-help": "^3.1.0",
-		"cli-welcome": "^2.2.2",
-		"meow": "^9.0.0",
-		"node-rsa": "^1.1.1"
-	},
-	"devDependencies": {
-		"prettier": "^2.6.2"
-	}
+  "name": "@wlankasper/password_manager_cli",
+  "version": "1.0.0",
+  "description": "RSA+AES Password Manager",
+  "main": "src/index.js",
+  "bin": {
+    "@wlankasper/password_manager_cli": "bin/create-project",
+    "psw-cli": "bin/create-project"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WlanKasper/password_manager_cli.git"
+  },
+  "keywords": [
+    "cli",
+    "create-project"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WlanKasper/password_manager_cli/issues"
+  },
+  "homepage": "https://github.com/WlanKasper/password_manager_cli#readme",
+  "dependencies": {
+    "arg": "^5.0.1",
+    "esm": "^3.2.25",
+    "inquirer": "^8.2.4"
+  }
 }

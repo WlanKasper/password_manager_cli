@@ -4,7 +4,6 @@ const cipher = require('./cipher');
 // ------------------------------------------------------------------------------------------------
 
 const path = 'data/data.txt';
-var tempJSON;
 
 // ------------------------------------------------------------------------------------------------
 
@@ -13,20 +12,19 @@ const byteStr = 'base64'
 
 // ------------------------------------------------------------------------------------------------
 
-function initTemp(authorization ,callback_1, callback_save)
+function initTemp(authorization, callback_save)
 {
     fs.stat(path, function(err, stats)
     {
         if (!err && stats.size > 0)
         {
-            console.log('\nФайл найден\n');
+            // console.log('\nФайл найден\n');
             requireDataFromFile(authorization);
         }
         else
         {
-            console.log('\nФайл не найден или пуст\n');
-            initJSON();
-            createDir();
+            // console.log('\nФайл не найден или пуст\n');
+            
         }
         // Для другого
         callback_1();
@@ -39,12 +37,22 @@ function initTemp(authorization ,callback_1, callback_save)
 
 function requireDataFromFile(authorization)
 {
-    let fileContent = fs.readFileSync(path, byteSiq);
-    let encrypted = cipher.decrypt(fileContent, authorization).toString(byteStr);
-    tempJSON = convertStringToJSON(encrypted);
+    try{
+        var fileContent = fs.readFileSync(path, byteSiq);
+    }catch(err){
+        return 'err_file'
+    }
+    var decrypted = cipher.decrypt(fileContent, authorization).toString(byteStr);
+
+    var temp = convertStringToJSON(decrypted);
+
+    if (temp == false){
+        return 'err_psw';
+    }
+    return temp;
 }
 
-function saveDataToFile()
+function saveDataToFile(tempJSON)
 {
     let data = convertJSONtoString(tempJSON);
     let encrypted = cipher.encrypt(data);
@@ -56,7 +64,7 @@ function saveDataToFile()
           byteSiq
         );
 
-        console.log('\nФайл сохранен\n');
+        // console.log('\nФайл сохранен\n');
     }
     catch (e)
     {
@@ -67,7 +75,7 @@ function saveDataToFile()
 
 // ------------------------------------------------------------------------------------------------
 
-function addCollectionToJSON(company, login, password, link, mnemonic, restore_key)
+function addCollectionToJSON(tempJSON, company, login, password, link, mnemonic, restore_key)
 {
     if (tempJSON != undefined && company != undefined)
     {
@@ -80,17 +88,18 @@ function addCollectionToJSON(company, login, password, link, mnemonic, restore_k
             mnemonic: mnemonic,
             restore_key: restore_key
         });
-        console.log('\nДобавленна новая коллекция\n');
+        // console.log('\nДобавленна новая коллекция\n');
     }
     else
     {
-        console.log('\nНе добавленна новая коллекция\n');
+        // console.log('\nНе добавленна новая коллекция\n');
     }
+    return tempJSON;
 }
 
 // ------------------------------------------------------------------------------------------------
 
-function getCollectionByCompany(company)
+function getCollectionByCompany(tempJSON, company)
 {
     let is = false;
     let temp = '';
@@ -120,7 +129,7 @@ function createDir()
     try
     {
         fs.mkdirSync('data', { recursive: true });
-        console.log('\nСоздана дирркетория Data\n');
+        // console.log('\nСоздана дирркетория Data\n');
     }
     catch (e)
     {
@@ -137,7 +146,7 @@ function deleteFile()
             try
             {
                 fs.unlinkSync(path);
-                console.log('\nФайл удален\n');
+                // console.log('\nФайл удален\n');
             } catch (e)
             {
                 console.log(e);
@@ -148,12 +157,13 @@ function deleteFile()
 
 // ------------------------------------------------------------------------------------------------
 
-function initJSON(user = 'Me')
+function initJSON(user = 'Me', tempJSON)
 {
     tempJSON = {
         user: user,
         collections: []
     };
+    return tempJSON;
 }
 
 function convertJSONtoString(json)
@@ -173,5 +183,8 @@ module.exports = {
     addCollectionToJSON: addCollectionToJSON,
     saveDataToFile: saveDataToFile,
     deleteFile: deleteFile,
-    getCollectionByCompany: getCollectionByCompany
+    getCollectionByCompany: getCollectionByCompany,
+    requireDataFromFile: requireDataFromFile,
+    initJSON:initJSON,
+    createDir:createDir
 };

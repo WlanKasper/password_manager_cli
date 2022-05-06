@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const fs = require('fs');
+const { get } = require("http");
 
 const byteSiq = 'utf8'
 const byteStr = 'base64'
@@ -55,7 +56,7 @@ function decrypt(encryptedData, authorization) {
           );
           return decryptedData.toString(byteSiq);
     } catch (err){
-        console.log('Не верный пароль!');
+        return false;
     }
 }
 
@@ -84,7 +85,7 @@ function saveToFile(data, path)
     } catch (e) {
         console.log(e);
     };
-    console.log('\nФайл сохранен в ' + path);
+    // console.log('\nФайл сохранен в ' + path);
 }
 
 function getKey(path)
@@ -93,7 +94,29 @@ function getKey(path)
     return key;
 }
 
+function checkKeys()
+{
+    try{
+        let res = getKey('keys/private.key');
+        return true;
+    }catch(e){
+        return false;
+    }
+
+}
+
+// переделать в мини зашифрованый файл для проверки 
+// или проверять по публичному ключу
+function checkPass(pass){
+    if(decrypt('data/data.txt', pass) != false){
+        return true;
+    }
+    return false;
+}
+
 module.exports.encrypt = encrypt;
 module.exports.decrypt = decrypt;
 module.exports.createKeyPair = createKeyPair;
 module.exports.getKey = getKey;
+module.exports.checkKeys = checkKeys;
+module.exports.checkPass = checkPass;
