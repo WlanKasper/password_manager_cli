@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "bin": {
     "@wlankasper/password_manager_cli": "bin/create-project",
-    "create-project": "bin/create-project"
+    "psw-cli": "bin/create-project"
   },
   "publishConfig": {
     "access": "public"
