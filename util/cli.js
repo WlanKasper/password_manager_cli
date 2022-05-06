@@ -37,7 +37,16 @@ async function menu() {
 
         const firstAnswers = await inquirer.prompt(firsQuestion);
 
-        if (true) {
+        var jsonTempData = data.requireDataFromFile(firstAnswers.aeskey);
+
+        if (jsonTempData === 'err_psw'){
+            console.log('\nPassword Error\n');
+        }else{
+            if (jsonTempData === 'err_file'){
+                jsonTempData = data.initJSON('Artur', jsonTempData);
+                data.createDir();
+                data.saveDataToFile(jsonTempData);
+            }
             // MENU
             let secondQuestion = {
                 type: 'list',
@@ -73,15 +82,8 @@ async function menu() {
 
                     const answers = await inquirer.prompt(questions);
 
-                    data.initTemp(
-                        firstAnswers.aeskey,
-                        function () {
-                            data.addCollectionToJSON(answers.company, answers.login, answers.password);
-                        },
-                        function () {
-                            data.saveDataToFile();
-                        }
-                    );
+                    jsonTempData = data.addCollectionToJSON(jsonTempData, answers.company, answers.login, answers.password);
+                    data.saveDataToFile(jsonTempData);
                     break;
 
                 case '<-> Find account':
@@ -93,13 +95,7 @@ async function menu() {
 
                     const answerCompany = await inquirer.prompt(company);
 
-                    data.initTemp(
-                        firstAnswers.aeskey,
-                        function () {
-                            console.log(data.getCollectionByCompany(answerCompany.company));
-                        },
-                        function () {}
-                    );
+                    console.log(data.getCollectionByCompany(jsonTempData, answerCompany.company));
                     break;
 
                 case '<-> Delete all':
@@ -118,8 +114,6 @@ async function menu() {
                 case '<-> Exit':
                     return true;
             }
-        } else {
-            console.log('\nPassword Error\n');
         }
     } else {
         // AES KEY PASSWORD
