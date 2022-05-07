@@ -21,4 +21,5 @@
 
 ### Usage
  - Start command: psw-cli
+
 IMPORTANT: YOU HAVE TO RUN START COMMAND FROM DIRECTORY /password_manager_cli!
