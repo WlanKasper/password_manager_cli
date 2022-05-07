@@ -5,7 +5,7 @@ const { get } = require("http");
 const byteSiq = 'utf8'
 const byteStr = 'base64'
 
-function createKeyPair(authorization)
+function createKeyPair(authorization, callback)
 {
     crypto.generateKeyPair('rsa', {
         modulusLength: 4096,
@@ -22,6 +22,7 @@ function createKeyPair(authorization)
       }, (err, publicKey, privateKey) => {
         saveToFile(publicKey, 'keys/public.key');
         saveToFile(privateKey, 'keys/private.key');
+        createPswFile(authorization);
       });
 }
 
@@ -33,17 +34,6 @@ function encrypt(data) {
     );
     return encryptedData.toString(byteStr);
 }
-
-// function encrypt(data) {
-//     const encryptedData = crypto.publicEncrypt({
-//             key: getKey('data/public.key'),
-//             padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-//             oaepHash: "sha256",
-//         },
-//         Buffer.from(data, byteStr)
-//     );
-//     return encryptedData;
-// }
 
 function decrypt(encryptedData, authorization) {
     try{
@@ -60,19 +50,6 @@ function decrypt(encryptedData, authorization) {
     }
 }
 
-// function decrypt(encryptedData) {
-//     const decryptedData = crypto.privateDecrypt(
-//         {
-//           key: getKey('data/private.key'),
-//           passphrase: 'test',
-//           padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-//           oaepHash: "sha256",
-//         },
-//         Buffer.from(encryptedData, byteStr)
-//       );
-//       return decryptedData;
-// }
-
 function saveToFile(data, path)
 {
     try {
@@ -85,7 +62,6 @@ function saveToFile(data, path)
     } catch (e) {
         console.log(e);
     };
-    // console.log('\nФайл сохранен в ' + path);
 }
 
 function getKey(path)
@@ -97,7 +73,7 @@ function getKey(path)
 function checkKeys()
 {
     try{
-        let res = getKey('keys/private.key');
+        getKey('keys/psw.key');
         return true;
     }catch(e){
         return false;
@@ -105,10 +81,16 @@ function checkKeys()
 
 }
 
-// переделать в мини зашифрованый файл для проверки 
-// или проверять по публичному ключу
-function checkPass(pass){
-    if(decrypt('data/data.txt', pass) != false){
+function createPswFile(psw){
+    const hash = crypto.createHash('sha256');
+    hash.update(psw);
+    saveToFile(hash.digest('hex'), 'keys/psw.key');
+}
+
+function checkPsw(psw){
+    const hash = crypto.createHash('sha256');
+    hash.update(psw);
+    if (getKey('keys/psw.key') == hash.digest('hex')) {
         return true;
     }
     return false;
@@ -119,4 +101,5 @@ module.exports.decrypt = decrypt;
 module.exports.createKeyPair = createKeyPair;
 module.exports.getKey = getKey;
 module.exports.checkKeys = checkKeys;
-module.exports.checkPass = checkPass;
+module.exports.checkPsw = checkPsw;
+module.exports.createPswFile = createPswFile;

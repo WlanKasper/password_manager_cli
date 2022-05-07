@@ -12,75 +12,35 @@ const byteStr = 'base64'
 
 // ------------------------------------------------------------------------------------------------
 
-function initTemp(authorization, callback_save)
-{
-    fs.stat(path, function(err, stats)
-    {
-        if (!err && stats.size > 0)
-        {
-            // console.log('\nФайл найден\n');
-            requireDataFromFile(authorization);
-        }
-        else
-        {
-            // console.log('\nФайл не найден или пуст\n');
-            
-        }
-        // Для другого
-        callback_1();
-        // Для сохранения
-        callback_save();
-    });
-}
-
-// ------------------------------------------------------------------------------------------------
-
-function requireDataFromFile(authorization)
-{
-    try{
-        var fileContent = fs.readFileSync(path, byteSiq);
-    }catch(err){
-        return 'err_file'
-    }
-    var decrypted = cipher.decrypt(fileContent, authorization).toString(byteStr);
-
-    var temp = convertStringToJSON(decrypted);
-
-    if (temp == false){
-        return 'err_psw';
-    }
+function requireDataFromFile(authorization) {
+    let fileContent = fs.readFileSync(path, byteSiq);
+    let decrypted = cipher.decrypt(fileContent, authorization).toString(byteStr);
+    let temp = convertStringToJSON(decrypted);
     return temp;
 }
 
-function saveDataToFile(tempJSON)
-{
+function saveDataToFile(tempJSON) {
     let data = convertJSONtoString(tempJSON);
     let encrypted = cipher.encrypt(data);
-    try
-    {
+    try {
         fs.writeFileSync(
-          path,
-          encrypted.toString(byteStr),
-          byteSiq
+            path,
+            encrypted.toString(byteStr),
+            byteSiq
         );
 
         // console.log('\nФайл сохранен\n');
-    }
-    catch (e)
-    {
+    } catch (e) {
         console.log(e);
     }
-      
+
 }
 
 // ------------------------------------------------------------------------------------------------
 
-function addCollectionToJSON(tempJSON, company, login, password, link, mnemonic, restore_key)
-{
-    if (tempJSON != undefined && company != undefined)
-    {
-        tempJSON.collections.push
-        ({
+function addCollectionToJSON(tempJSON, company, login, password, link, mnemonic, restore_key) {
+    if (tempJSON != undefined && company != undefined) {
+        tempJSON.collections.push({
             company: company,
             login: login,
             password: password,
@@ -89,9 +49,7 @@ function addCollectionToJSON(tempJSON, company, login, password, link, mnemonic,
             restore_key: restore_key
         });
         // console.log('\nДобавленна новая коллекция\n');
-    }
-    else
-    {
+    } else {
         // console.log('\nНе добавленна новая коллекция\n');
     }
     return tempJSON;
@@ -99,20 +57,19 @@ function addCollectionToJSON(tempJSON, company, login, password, link, mnemonic,
 
 // ------------------------------------------------------------------------------------------------
 
-function getCollectionByCompany(tempJSON, company)
-{
+function getCollectionByCompany(tempJSON, company) {
     let is = false;
     let temp = '';
-    if (tempJSON != null && tempJSON.collections.length != 0){
+    if (tempJSON != null && tempJSON.collections.length != 0) {
         for (var i = 0; i <= tempJSON.collections.length - 1; i++) {
             for (key in tempJSON.collections[i]) {
                 if (tempJSON.collections[i].hasOwnProperty(key)) {
-                    if(key == 'company' && tempJSON.collections[i][key] == company){
+                    if (key == 'company' && tempJSON.collections[i][key] == company) {
                         is = true;
                         temp += '\n-----------------'
                     }
-                    if (is == true){
-                        temp += '\n'+key + ": " + tempJSON.collections[i][key];
+                    if (is == true) {
+                        temp += '\n' + key + ": " + tempJSON.collections[i][key];
                     }
                 }
             }
@@ -124,31 +81,24 @@ function getCollectionByCompany(tempJSON, company)
 
 // ------------------------------------------------------------------------------------------------
 
-function createDir()
-{
-    try
-    {
-        fs.mkdirSync('data', { recursive: true });
+function createDir() {
+    try {
+        fs.mkdirSync('data', {
+            recursive: true
+        });
         // console.log('\nСоздана дирркетория Data\n');
-    }
-    catch (e)
-    {
+    } catch (e) {
         console.log(e);
     }
 }
 
-function deleteFile()
-{
-    fs.stat(path, function(err, stats)
-    {
-        if (!err)
-        {
-            try
-            {
+function deleteFile() {
+    fs.stat(path, function (err, stats) {
+        if (!err) {
+            try {
                 fs.unlinkSync(path);
                 // console.log('\nФайл удален\n');
-            } catch (e)
-            {
+            } catch (e) {
                 console.log(e);
             }
         }
@@ -157,34 +107,37 @@ function deleteFile()
 
 // ------------------------------------------------------------------------------------------------
 
-function initJSON(user = 'Me', tempJSON)
-{
-    tempJSON = {
-        user: user,
-        collections: []
-    };
+function initJSON(user = 'Me', authorization) {
+    let tempJSON;
+
+    try {
+        tempJSON = requireDataFromFile(authorization);
+    } catch (error) {
+        tempJSON = {
+            user: user,
+            collections: []
+        };
+    }
+
     return tempJSON;
 }
 
-function convertJSONtoString(json)
-{
+function convertJSONtoString(json) {
     return JSON.stringify(json);
 }
 
-function convertStringToJSON(string)
-{
+function convertStringToJSON(string) {
     return JSON.parse(string);
 }
 
 // ------------------------------------------------------------------------------------------------
 
 module.exports = {
-    initTemp: initTemp,
     addCollectionToJSON: addCollectionToJSON,
     saveDataToFile: saveDataToFile,
     deleteFile: deleteFile,
     getCollectionByCompany: getCollectionByCompany,
     requireDataFromFile: requireDataFromFile,
-    initJSON:initJSON,
-    createDir:createDir
+    initJSON: initJSON,
+    createDir: createDir
 };
