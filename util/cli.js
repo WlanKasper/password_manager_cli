@@ -28,52 +28,147 @@ const data = require('../src/manager');
 
 async function menu(authorization) {
     // MENU
-    const menuAnswers = await inquirer.prompt({
+    const menuAnswerStandard = await inquirer.prompt({
         type: 'list',
         name: 'action',
         message: 'Menu',
         choices: ['<-> Add new account', '<-> Find account', '<-> Delete all', '<-> Exit'],
     });
 
-    let jsonTempData = data.initJSON('WlanKasper',authorization);
+    let jsonTempData = data.initJSON('WlanKasper', authorization);
 
-    switch (menuAnswers.action) {
+    switch (menuAnswerStandard.action) {
 
         case '<-> Add new account':
-            let questions = [];
 
-            questions.push({
-                type: 'input',
-                name: 'company',
-                message: 'Enter company name: '
+            const typeAnswer = await inquirer.prompt({
+                type: 'list',
+                name: 'insert',
+                message: 'Wich type of account',
+                choices: ['<-> Standard', '<-> Crypto'],
             });
 
-            questions.push({
-                type: 'input',
-                name: 'login',
-                message: 'Enter login: '
-            });
+            switch (typeAnswer.insert) {
 
-            questions.push({
-                type: 'password',
-                name: 'password',
-                message: 'Enter password: ',
-                mask: '*'
-            });
+                case '<-> Standard':
+                    let standardAcc = [];
 
-            const answers = await inquirer.prompt(questions);
-            jsonTempData = data.addCollectionToJSON(jsonTempData, answers.company, answers.login, answers.password);
-            data.saveDataToFile(jsonTempData);
+                    standardAcc.push({
+                        type: 'input',
+                        name: 'company',
+                        message: 'Company: '
+                    });
+
+                    standardAcc.push({
+                        type: 'input',
+                        name: 'login',
+                        message: 'Login: '
+                    });
+
+                    standardAcc.push({
+                        type: 'password',
+                        name: 'password',
+                        message: 'Password: ',
+                        mask: '*'
+                    });
+
+                    standardAcc.push({
+                        type: 'input',
+                        name: 'link',
+                        message: 'Link (optional): '
+                    });
+
+                    standardAcc.push({
+                        type: 'input',
+                        name: 'key',
+                        message: 'Reset Key (optional): '
+                    });
+
+                    standardAcc.push({
+                        type: 'input',
+                        name: 'notes',
+                        message: 'Notes (optional): '
+                    });
+
+                    const answerStandard = await inquirer.prompt(standardAcc);
+                    jsonTempData = data.addStandardAccToJSON(jsonTempData, answerStandard.company, answerStandard.login, answerStandard.password, answerStandard.link, answerStandard.key, answerStandard.notes);
+                    data.saveDataToFile(jsonTempData);
+                    break;
+
+                case '<-> Crypto':
+                    let cryptiAcc = [];
+
+                    cryptiAcc.push({
+                        type: 'input',
+                        name: 'company',
+                        message: 'Company: '
+                    });
+
+                    cryptiAcc.push({
+                        type: 'input',
+                        name: 'address',
+                        message: 'Addres: '
+                    });
+
+                    cryptiAcc.push({
+                        type: 'password',
+                        name: 'password',
+                        message: 'Password: ',
+                        mask: '*'
+                    });
+
+                    cryptiAcc.push({
+                        type: 'input',
+                        name: 'mnemonic',
+                        message: 'Mnemonic: ',
+                    });
+
+                    cryptiAcc.push({
+                        type: 'input',
+                        name: 'link',
+                        message: 'Link (optional): '
+                    });
+                    cryptiAcc.push({
+                        type: 'input',
+                        name: 'notes',
+                        message: 'Notes (optional): '
+                    });
+
+                    const answerCrypto = await inquirer.prompt(cryptiAcc);
+                    jsonTempData = data.addCryptoAccToJSON(jsonTempData, answerCrypto.company, answerCrypto.address, answerCrypto.password, answerCrypto.mnemonic, answerCrypto.link, answerCrypto.notes);
+                    data.saveDataToFile(jsonTempData);
+                    break;
+            }
             break;
 
         case '<-> Find account':
-            const companyAnswer = await inquirer.prompt({
-                type: 'input',
-                name: 'company',
-                message: 'Enter company name: '
+            const answerFind = await inquirer.prompt({
+                type: 'list',
+                name: 'findBy',
+                message: 'Choice parameter: ',
+                choices: ['<-> By company', '<-> By address'],
             });
+            switch (answerFind.findBy) {
+                case '<-> By company':
+                    const answerCompany = await inquirer.prompt({
+                        type: 'input',
+                        name: 'company',
+                        message: 'Company to find: '
+                    });
 
-            console.log(data.getCollectionByCompany(jsonTempData, companyAnswer.company));
+                    console.log(data.getAccByCompany(jsonTempData, answerCompany.company));
+                    break;
+
+                case '<-> By address':
+                    const answerAddress = await inquirer.prompt({
+                        type: 'input',
+                        name: 'address',
+                        message: 'Address to find: '
+                    });
+
+                    console.log(data.getAccByAddress(jsonTempData, answerAddress.address));
+                    break;
+            }
             break;
 
         case '<-> Delete all':

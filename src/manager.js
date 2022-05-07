@@ -38,15 +38,32 @@ function saveDataToFile(tempJSON) {
 
 // ------------------------------------------------------------------------------------------------
 
-function addCollectionToJSON(tempJSON, company, login, password, link, mnemonic, restore_key) {
+function addStandardAccToJSON(tempJSON, company, login, password, link, restore_key, notes) {
     if (tempJSON != undefined && company != undefined) {
         tempJSON.collections.push({
             company: company,
             login: login,
             password: password,
             link: link,
+            restore_key: restore_key,
+            notes: notes
+        });
+        // console.log('\nДобавленна новая коллекция\n');
+    } else {
+        // console.log('\nНе добавленна новая коллекция\n');
+    }
+    return tempJSON;
+}
+
+function addCryptoAccToJSON(tempJSON, company, address, password, mnemonic, link, notes) {
+    if (tempJSON != undefined && company != undefined) {
+        tempJSON.collections.push({
+            company: company,
+            address: address,
+            password: password,
             mnemonic: mnemonic,
-            restore_key: restore_key
+            link: link,
+            notes: notes
         });
         // console.log('\nДобавленна новая коллекция\n');
     } else {
@@ -57,7 +74,7 @@ function addCollectionToJSON(tempJSON, company, login, password, link, mnemonic,
 
 // ------------------------------------------------------------------------------------------------
 
-function getCollectionByCompany(tempJSON, company) {
+function getAccByCompany(tempJSON, company) {
     let is = false;
     let temp = '';
     if (tempJSON != null && tempJSON.collections.length != 0) {
@@ -79,6 +96,27 @@ function getCollectionByCompany(tempJSON, company) {
     }
 }
 
+function getAccByAddress(tempJSON, address) {
+    let is = false;
+    let temp = '';
+    if (tempJSON != null && tempJSON.collections.length != 0) {
+        for (var i = 0; i <= tempJSON.collections.length - 1; i++) {
+            for (key in tempJSON.collections[i]) {
+                if (tempJSON.collections[i].hasOwnProperty(key)) {
+                    if (key == 'address' && tempJSON.collections[i][key] == address) {
+                        is = true;
+                        temp += '\n-----------------'
+                    }
+                    if (is == true) {
+                        temp += '\n' + key + ": " + tempJSON.collections[i][key];
+                    }
+                }
+            }
+            is = false;
+        }
+        return (temp != '') ? temp : '\nДанные отсутствуют\n';
+    }
+}
 // ------------------------------------------------------------------------------------------------
 
 function createDir() {
@@ -133,11 +171,13 @@ function convertStringToJSON(string) {
 // ------------------------------------------------------------------------------------------------
 
 module.exports = {
-    addCollectionToJSON: addCollectionToJSON,
+    addStandardAccToJSON: addStandardAccToJSON,
     saveDataToFile: saveDataToFile,
     deleteFile: deleteFile,
-    getCollectionByCompany: getCollectionByCompany,
+    getAccByCompany: getAccByCompany,
     requireDataFromFile: requireDataFromFile,
     initJSON: initJSON,
-    createDir: createDir
+    createDir: createDir,
+    addCryptoAccToJSON: addCryptoAccToJSON,
+    getAccByAddress: getAccByAddress
 };
