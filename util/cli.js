@@ -27,6 +27,7 @@ const data = require('../src/manager');
 // }
 
 async function menu(authorization) {
+    console.clear();
     // MENU
     const menuAnswerStandard = await inquirer.prompt({
         type: 'list',
@@ -185,13 +186,14 @@ async function menu(authorization) {
             break;
 
         case '<-> Exit':
-            return true;
+            return false;
     }
+    return true;
 }
 
 export async function cli() {
     // let options = parseArgumentsIntoOptions();
-
+    console.clear();
     if (cipher.checkKeys()) {
         const passwordAnswer = await inquirer.prompt({
             type: 'password',
@@ -201,19 +203,30 @@ export async function cli() {
         });
 
         if (cipher.checkPsw(passwordAnswer.aeskey)) {
-            await menu(passwordAnswer.aeskey);
+            while (await menu(passwordAnswer.aeskey)){}
         } else {
             await cli();
         }
     } else {
-        const passwordAnswer = await inquirer.prompt({
+        const passwordAnswerFirst = await inquirer.prompt({
             type: 'password',
             name: 'rsakey',
             message: 'Welcome!\nYou have to create AES key to encript private RSA key\nEnter your password: ',
             mask: '*'
         });
 
-        cipher.createKeyPair(passwordAnswer.rsakey);
-        await menu(passwordAnswer.aeskey);
+        const passwordAnswerSecond = await inquirer.prompt({
+            type: 'password',
+            name: 'rsakey',
+            message: 'Verify password: ',
+            mask: '*'
+        });
+
+        if (passwordAnswerFirst.password == passwordAnswerSecond.password){
+            cipher.createKeyPair(passwordAnswerFirst.rsakey);
+            while (await menu(passwordAnswer.aeskey)){}
+        } else {
+            await cli();
+        }
     }
 }

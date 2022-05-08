@@ -81,7 +81,7 @@ function getAccByCompany(tempJSON, company) {
         for (var i = 0; i <= tempJSON.collections.length - 1; i++) {
             for (key in tempJSON.collections[i]) {
                 if (tempJSON.collections[i].hasOwnProperty(key)) {
-                    if (key == 'company' && tempJSON.collections[i][key] == company) {
+                    if (key == 'company' && tempJSON.collections[i][key].toLowerCase() == company.toLowerCase()) {
                         is = true;
                         temp += '\n-----------------'
                     }
@@ -103,7 +103,7 @@ function getAccByAddress(tempJSON, address) {
         for (var i = 0; i <= tempJSON.collections.length - 1; i++) {
             for (key in tempJSON.collections[i]) {
                 if (tempJSON.collections[i].hasOwnProperty(key)) {
-                    if (key == 'address' && tempJSON.collections[i][key] == address) {
+                    if (key == 'address' && tempJSON.collections[i][key].toLowerCase() == address.toLowerCase()) {
                         is = true;
                         temp += '\n-----------------'
                     }
