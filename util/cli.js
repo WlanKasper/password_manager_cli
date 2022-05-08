@@ -27,7 +27,6 @@ const data = require('../src/manager');
 // }
 
 async function menu(authorization) {
-    console.clear();
     // MENU
     const menuAnswerStandard = await inquirer.prompt({
         type: 'list',
@@ -37,7 +36,7 @@ async function menu(authorization) {
     });
 
     let jsonTempData = data.initJSON('WlanKasper', authorization);
-
+    console.clear();
     switch (menuAnswerStandard.action) {
 
         case '<-> Add new account':
@@ -158,6 +157,7 @@ async function menu(authorization) {
                     });
 
                     console.log(data.getAccByCompany(jsonTempData, answerCompany.company));
+                    console.log('\n-----------------\n\n');
                     break;
 
                 case '<-> By address':
@@ -168,6 +168,7 @@ async function menu(authorization) {
                     });
 
                     console.log(data.getAccByAddress(jsonTempData, answerAddress.address));
+                    console.log('-----------------\n\n');
                     break;
             }
             break;
