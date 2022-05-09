@@ -225,7 +225,7 @@ export async function cli() {
 
         if (passwordAnswerFirst.password == passwordAnswerSecond.password){
             cipher.createKeyPair(passwordAnswerFirst.rsakey);
-            while (await menu(passwordAnswer.aeskey)){}
+            while (await menu(passwordAnswerFirst.aeskey)){}
         } else {
             await cli();
         }
